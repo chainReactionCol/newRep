@@ -487,3 +487,28 @@ ax=sns.boxplot( x = dx, y = dy, data = dfTest_Norway, color = "black",
  boxprops = {'facecolor':'none', "zorder":10}, showfliers=True,
  whiskerprops = {'linewidth':2, "zorder":10},
  saturation = 1, orient = ort)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Extracción y limpieza de los datos de la TRM historica extraídos de la API del gobierno nacional:
+
+Regex para la cadena de las fechas:
+
+\d: Este símbolo coincide con cualquier dígito (0-9).
+
+{4}: Este cuantificador indica que el símbolo o grupo anterior debe aparecer exactamente 4 veces. Entonces, \d{4} coincide con cualquier grupo de 4 dígitos, como "2023".
+
+-: Este es un carácter literal que coincide con el símbolo "-" en la cadena. Lo utilizamos para mover nuestra coincidencia más allá del año y hacia el mes y el día.
+
+\d{2}: Al igual que antes, esto coincide con un grupo de 2 dígitos, como "09" o "15". Usamos esto para el mes y el día.
+
+T: Este es un carácter literal que coincide con el "T" en la cadena. Utilizamos este carácter para indicar el final del patrón que queremos capturar para la fecha.
+
+(): Los paréntesis se utilizan para capturar un grupo. Esto nos permite extraer sólo la parte de la coincidencia que nos interesa. En este caso, queremos extraer el año, por lo que lo rodeamos con paréntesis: (\d{4}).
+
+Entonces, al juntar todo:
+
+(\d{4}) captura los 4 dígitos que representan el año.
+-\d{2}-\d{2} coincide con el mes y el día, pero no los captura.
+T coincide con el carácter "T" que sigue al día en la cadena.
+La función match.group(1) en el código extrae el primer (y único, en este caso) grupo capturado, que es el año.
